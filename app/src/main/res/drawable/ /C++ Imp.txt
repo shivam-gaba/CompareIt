@@ -1,0 +1,49 @@
+#include: In C++,  all lines that start with pound (#) sign are called directives.
+IDE :Integrated development Environment
+The #include directive tells the compiler to include a file
+#include<iostream> . It tells the compiler to include the standard iostream file which contains declarations of all the standard input/output library functions.
+Indentation: As you can see the cout and the return statement have been indented or moved to the right side. This is done to make the code more readable.
+A – Z = 65 to 90, a – z = 97 to 122 
+
+
+
+Integers typically requires 4 bytes 
+Characters typically requires 1 byte
+Float variables typically requires 4 byte of memory space.
+Double variables typically requires 8 byte of memory space.
+Wide Character: Wide character data type is also a character data type but this data type has size greater than the normal 1 byte datatype. Represented by wchar_t. It is generally 2 or 4 bytes long.
+Datatype Modifiers: As the name implies, datatype modifiers are used with the built-in data types to modify the length of data that a particular data type can hold. Data type modifiers available in C++ are:
+Signed
+Unsigned
+Short
+Long
+"int and long int are same."
+long double	12
+wchar_t	2 or 4	
+Un-buffered standard error stream (cerr): cerr is the standard error stream which is used to output the errors. This is also an instance of the ostream class. As cerr is un-buffered so it is used when we need to display the error message immediately. It does not have any buffer to store the error message and display later.
+buffered standard error stream (clog): This is also an instance of ostream class and used to display errors but unlike cerr the error is first inserted into a buffer and is stored in the buffer until it is not fully filled. The error message will be displayed on the screen too.
+
+
+
+
+Macros: Macros are piece of code in a program which is given some name. Whenever this name is encountered by the compiler the compiler replaces the name with the actual piece of code. The ‘#define’ directive is used to define a macro. Let us now understand macro definition with the help of a program:
+In the above program, when the compiler executes the word LIMIT it replaces it with 5. The word ‘LIMIT’ in macro definition is called macro template and ‘5’ is macro expansion
+Note: There is no semi-colon(‘;’) at the end of macro definition. Macro definitions do not need a semi-colon to end.
+
+
+#ifdef macro_name
+    statement1;
+    statement2;
+    statement3;
+    .
+    .
+    .
+    statementN;
+#endif
+
+#undef Directive: The #undef directive is used to undefine an existing macro. This directive works as:
+#undef LIMIT
+Using this statement will undefine the existing macro LIMIT. After this statement every “#ifdef LIMIT” statement will evaluate to false.
+
+
+#pragma startup and #pragma exit: These directives helps us to specify the functions that are needed to run before program startup ( before the control passes to main()) and just before program exit (just before the control returns from main()).

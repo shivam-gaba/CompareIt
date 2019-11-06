@@ -1,0 +1,22 @@
+
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+return;
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+return;
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+return;
+    }
+
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+return;
+    }}

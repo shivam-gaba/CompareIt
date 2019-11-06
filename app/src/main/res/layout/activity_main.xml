@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:id="@+id/root_layout"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="30dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Compare it"
+        android:textSize="36sp"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="compare your cab fare"
+        android:textSize="16sp"
+        android:layout_marginTop="5dp"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        />
+
+
+
+</LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Looking for the lowest cab rates?"
+        android:textColor="@color/bottomText"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:id="@+id/txtBottom"
+        />
+
+
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:layout_above="@+id/txtBottom"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_margin="16dp"
+        >
+
+
+        <Button
+            android:layout_marginRight="6dp"
+            android:text="SIGN IN"
+            android:id="@+id/btnSignIn"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:background="@drawable/btn_sign_in_background"
+            android:layout_height="wrap_content" />
+
+
+        <Button
+            android:layout_weight="1"
+            android:textColor="@color/btnRegister"
+            android:layout_marginLeft="6dp"
+            android:background="@drawable/btn_register_background"
+            android:text="REGISTER"
+            android:id="@+id/btnRegister"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

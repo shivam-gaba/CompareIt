@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 apply plugin: 'com.android.application'
 
 android {
@@ -8,7 +7,6 @@ android {
         applicationId "com.example.compareit"
         minSdkVersion 19
         targetSdkVersion 29
-
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
@@ -29,6 +27,10 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
     implementation 'uk.co.chrisjenx:calligraphy:2.1.0'
+    // add SDKs for desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
+
+    // Add the Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
 
     // Add the SDKs for any other Firebase products you want to use in your app
@@ -65,18 +67,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
 
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.5.0'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v8:0.9.0'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.42.3'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.3'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-markerview-v8:0.3.0'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:4.2.0-SNAPSHOT@aar'
-
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
-    implementation 'com.android.support:multidex:1.0.3'
 
 }
 apply plugin: 'com.android.application'
@@ -86,36 +76,3 @@ android {
 // Add the following line to the bottom of the file:
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
 
-=======
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-buildscript {
-    repositories {
-        google()
-        jcenter()
-        
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
-        classpath 'com.google.gms:google-services:4.3.2'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-allprojects {
-    repositories {
-        mavenCentral()
-        google()
-        maven { url "http://dl.bintray.com/glomadrian/maven" }
-        jcenter()
-        
-    }
-}
-
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
->>>>>>> Initial commit

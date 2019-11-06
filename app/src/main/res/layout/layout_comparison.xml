@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uber="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home">
+
+
+    <com.uber.sdk.android.rides.RideRequestButton
+
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        uber:ub__style="black" />
+    <TextView
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:textStyle="bold"
+        android:textColor="@color/uber_black"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textSize="30sp"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:elevation="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="70dp"
+        android:background="#D7DF23"
+        android:textStyle="bold"
+        android:text="Ride there with Ola"
+        android:height="52dp"
+
+        />
+
+</LinearLayout>

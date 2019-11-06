@@ -1,0 +1,21 @@
+
+        SessionConfiguration config = new SessionConfiguration.Builder()
+                // mandatory
+                .setClientId("9cuaRKTqhh8Glvga-q-Dfx68AD01KP84")
+                // required for enhanced button features
+                .setServerToken("")
+                // required for implicit grant authentication
+                .setRedirectUri("<REDIRECT_URI>")
+                // optional: set sandbox as operating environment
+                .setEnvironment(SessionConfiguration.Environment.SANDBOX)
+                .build();
+
+        UberSdk.initialize(config);
+
+        // get the context by invoking ``getApplicationContext()``, ``getContext()``, ``getBaseContext()`` or ``this`` when in the activity class
+        RideRequestButton requestButton = new RideRequestButton(this);
+// get your layout, for instance:
+        RelativeLayout layout = new RelativeLayout(this);
+        layout.addView(requestButton);
+
+
