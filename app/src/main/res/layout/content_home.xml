@@ -13,36 +13,24 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+        >
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.MapFragment"
-            android:layout_width="match_parent"
+        <com.mapbox.mapboxsdk.maps.MapView
             android:layout_height="match_parent"
-            tools:context=".Welcome" />
+            android:layout_width="match_parent"
+            android:id="@+id/mapView"
+            mapbox:mapbox_cameraZoom="12"
+            >
 
+        </com.mapbox.mapboxsdk.maps.MapView>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             app:cardElevation="10dp"
             >
-          <Button
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="10dp"
-              android:layout_marginRight="20dp"
-              android:layout_marginLeft="20dp"
-              android:layout_marginBottom="10dp"
-              android:background="@color/uber_black"
-              android:textColor="#FFFFFF"
-              android:text="Proceed"
-              android:id="@+id/btnCompare"
-              />
-
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,9 +40,44 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/uber_black"
                 android:textColor="#FFFFFF"
-                android:text="Check Cabs"
-                android:id="@+id/btnCompare1"
+                android:text="Proceed"
+                android:id="@+id/btnCompare"
                 />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/uber_black"
+        android:textColor="#FFFFFF"
+        android:text="Check Cabs"
+        android:id="@+id/btnCompare1"
+        />
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/uber_black"
+        android:textColor="#FFFFFF"
+        android:text="Reset"
+        android:id="@+id/btnReset"
+        />
+
+
+</LinearLayout>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
 

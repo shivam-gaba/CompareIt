@@ -22,74 +22,86 @@
 
     <include layout="@layout/content_home" />
 
-<androidx.cardview.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="top"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="70dp"
-    app:cardElevation="10dp"
-    >
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-
-
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="70dp"
+        app:cardElevation="10dp"
+        >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="6"
-            >
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/location_pin"
-                />
-            <fragment
-                android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:weightSum="6"
+                >
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/location_pin"
+                    />
+                <Button
+                    android:textColor="@color/uber_black"
+                    android:hint="Pickup Location"
+                    android:id="@+id/fab_start_search"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:tint="@android:color/white"
+                    android:background="#FFFFFF"
+                    app:srcCompat="@android:drawable/ic_search_category_default" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="#1F000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:id="@+id/place_location"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment">
-            </fragment>
+                android:orientation="horizontal"
+                android:weightSum="6"
+                >
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/map"
+                    />
+                <Button
+                    android:hint="Destination point"
+                    android:id="@+id/fab_end_search"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:textColor="@color/uber_black"
+                    android:layout_height="wrap_content"
+                    android:tint="@android:color/black"
+                    android:background="#FFFFFF"
+                    app:srcCompat="@android:drawable/ic_search_category_default" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:background="#1F000000" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="6"
-            >
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/map"
-                />
-            <fragment
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:id="@+id/place_destination"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment">
-            </fragment>
-        </LinearLayout>
-
-    </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+

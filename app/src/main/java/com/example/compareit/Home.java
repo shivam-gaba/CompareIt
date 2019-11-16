@@ -1,117 +1,105 @@
 package com.example.compareit;
 
-import android.Manifest;
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.view.GravityCompat;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-import java.util.Arrays;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.firebase.geofire.GeoFire;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.Point;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
+import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import com.uber.sdk.android.core.UberSdk;
-import com.uber.sdk.android.rides.RideParameters;
-import com.uber.sdk.rides.client.ServerTokenSession;
-import com.uber.sdk.rides.client.SessionConfiguration;
-import com.uber.sdk.android.rides.RideRequestButton;
-
 public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
-    , LocationListener
-{
-    public static final int MY_PERMISSION_REQUEST_CODE = 1;
-    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 2;
+        implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback, PermissionsListener {
+
+    private MapView mapView;
+    private PermissionsManager permissionsManager;
+    private MapboxMap mapboxMap;
+    private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
+    private static final int REQUEST_CODE_AUTOCOMPLETE2 = 2;
+    private String geojsonSourceLayerId = "geojsonSourceLayerId";
+    private String symbolIconId = "symbolIconId";
+    public String start;
+    public String end;
+
+    MarkerOptions markerOptions;
 
 
-    LatLng startPoint;
-    LatLng endPoint;
+    public NavigationMapRoute navigationMapRoute;
 
-    private LocationRequest mLocationRequest;
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
+    public LatLng startLatLng;
+    public LatLng endLatLng;
 
-    private static int UPDATE_INTERVAL = 3;
-    private static int FASTEST_INTERVAL = 4;
-    private static int DISPLACEMENT = 5;
+    double startLat;
+    double endLat;
+    double startLng;
+    double endLng;
 
     DatabaseReference ref;
     GeoFire geoFire;
-    Marker mUserMarker;
 
     Button btnCompare;
     Button btnCompare1;
+    Button btnReset;
 
-    String API_KEY = "AIzaSyDx3KodwtEtmOyZ1myO-61HY6fth4dbJzI";
-    PlacesClient placesClient;
-    public GoogleMap mMap;
+    Button fab_end_search;
+    Button fab_start_search;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
-
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,16 +110,22 @@ public class Home extends AppCompatActivity
                 .setFontAttrId(R.attr.fontPath)
                 .build());
 
+        Mapbox.getInstance(this, "pk.eyJ1Ijoic2hpdjg5NjhzaCIsImEiOiJjazJ4bHp4Y3AwZDRuM21vMnB3YjBsd2EyIn0.0WhEGT_VqjsHi8QMnzc6Yg");
         setContentView(R.layout.activity_home);
 
+        fab_start_search = findViewById(R.id.fab_start_search);
+        fab_end_search = findViewById(R.id.fab_end_search);
 
-       autoCompleteBoxForLocation();
-          autoCompleteBoxForDestination();
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
 
+        mapView.getMapAsync(this);
 
-        btnCompare=findViewById(R.id.btnCompare);
-        btnCompare1=findViewById(R.id.btnCompare1);
+        btnCompare = findViewById(R.id.btnCompare);
+        btnCompare1 = findViewById(R.id.btnCompare1);
+        btnReset=findViewById(R.id.btnReset);
 
+        btnReset.setVisibility(View.GONE);
         btnCompare.setVisibility(View.VISIBLE);
         btnCompare1.setVisibility(View.GONE);
 
@@ -140,20 +134,32 @@ public class Home extends AppCompatActivity
             public void onClick(View view) {
 
                 onProceedClicked();
-
-                if (startPoint != null && endPoint != null) {
-                    btnCompare.setVisibility(View.GONE);
-                    btnCompare1.setVisibility(View.VISIBLE);
-                }
             }
         });
 
         btnCompare1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(Home.this, "Yet to be developed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                Intent intent=new Intent(Home.this,CabsActivity.class);
-                startActivity(intent);
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                fab_start_search.setEnabled(true);
+                fab_end_search.setEnabled(true);
+                fab_start_search.setText("");
+                fab_end_search.setText("");
+
+                btnReset.setVisibility(View.GONE);
+                btnCompare1.setVisibility(View.GONE);
+                btnCompare.setVisibility(View.VISIBLE);
+
+                mapboxMap.clear();
+                mapboxMap.removeAnnotations();
+                navigationMapRoute.removeRoute();
 
             }
         });
@@ -169,39 +175,327 @@ public class Home extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
-        ref= FirebaseDatabase.getInstance().getReference("users");
-        geoFire=new GeoFire(ref);
+        ref = FirebaseDatabase.getInstance().getReference("users");
+        geoFire = new GeoFire(ref);
 
-        setUpLocation();
     }
-
-
-
 
     private void onProceedClicked() {
 
-        if (startPoint != null && endPoint != null) {
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            builder.include(new LatLng(startPoint.latitude, startPoint.longitude));
-            builder.include(new LatLng(endPoint.latitude, endPoint.longitude));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 48));
-        }
-        else
-        {
-            Toast.makeText(Home.this, " Please enter start and end points. ", Toast.LENGTH_SHORT).show();
+        if (startLatLng != null && endLatLng != null) {
+            getRoute(Point.fromLngLat(startLng, startLat), Point.fromLngLat(endLng, endLat));
+            LatLngBounds latLngBounds = new LatLngBounds.Builder()
+                    .include(startLatLng) // Northeast
+                    .include(endLatLng) // Southwest
+                    .build();
+            mapboxMap.easeCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 200), 5000);
+            btnCompare.setVisibility(View.GONE);
+            btnCompare1.setVisibility(View.VISIBLE);
+            btnReset.setVisibility(View.VISIBLE);
+
+            fab_start_search.setEnabled(false);
+            fab_end_search.setEnabled(false);
+
+
+
+        } else {
+            Toast.makeText(this, "Please enter all fields!", Toast.LENGTH_SHORT).show();
         }
     }
 
 
+    private void getRoute(Point startLatLng, Point endLatLng) {
+
+
+        NavigationRoute.builder(this)
+                .accessToken(Mapbox.getAccessToken())
+                .origin(startLatLng)
+                .destination(endLatLng)
+                .build()
+                .getRoute(new Callback<DirectionsResponse>() {
+                    @Override
+                    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                        if (response.body() == null || response.body().routes().size() == 00) {
+                            Toast.makeText(Home.this, "No Routes found", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        DirectionsRoute currentRoute = response.body().routes().get(0);
+
+                        if (navigationMapRoute != null) {
+                            navigationMapRoute.updateRouteArrowVisibilityTo(false);
+                            navigationMapRoute.updateRouteArrowVisibilityTo(false);
+                        } else {
+                            navigationMapRoute = new NavigationMapRoute(null, mapView, mapboxMap);
+                        }
+
+                        navigationMapRoute.addRoute(currentRoute);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<DirectionsResponse> call, Throwable t) {
+                        Toast.makeText(Home.this, "Failed :" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+    }
+
+
+    // maps//
+    //
+    //
+
+    //
+
+    //
+
+    @Override
+    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+        this.mapboxMap = mapboxMap;
+        mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+
+                enableLocationComponent(style);
+
+                initSearchFab();
+                fab_start_search.setText(start);
+
+                initSearchFab2();
+                fab_end_search.setText(end);
+
+
+// Add the symbol layer icon to map for future use
+                style.addImage(symbolIconId, BitmapFactory.decodeResource(
+                        Home.this.getResources(), R.drawable.map_default_map_marker));
+
+
+            }
+        });
+
+
+    }
+
+    private void initSearchFab2() {
+        fab_end_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new PlaceAutocomplete.IntentBuilder()
+                        .accessToken(Mapbox.getAccessToken() != null ? Mapbox.getAccessToken() : "pk.eyJ1Ijoic2hpdjg5NjhzaCIsImEiOiJjazJ4bHp4Y3AwZDRuM21vMnB3YjBsd2EyIn0.0WhEGT_VqjsHi8QMnzc6Yg")
+                        .placeOptions(PlaceOptions.builder()
+                                .backgroundColor(Color.parseColor("#EEEEEE"))
+                                .limit(10)
+                                .build(PlaceOptions.MODE_CARDS))
+                        .build(Home.this);
+                startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE2);
+
+            }
+        });
+    }
+
+    private void initSearchFab() {
+        fab_start_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new PlaceAutocomplete.IntentBuilder()
+                        .accessToken(Mapbox.getAccessToken() != null ? Mapbox.getAccessToken() : "pk.eyJ1Ijoic2hpdjg5NjhzaCIsImEiOiJjazJ4bHp4Y3AwZDRuM21vMnB3YjBsd2EyIn0.0WhEGT_VqjsHi8QMnzc6Yg")
+                        .placeOptions(PlaceOptions.builder()
+                                .backgroundColor(Color.parseColor("#EEEEEE"))
+                                .limit(10)
+                                .build(PlaceOptions.MODE_CARDS))
+                        .build(Home.this);
+                startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
+
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_AUTOCOMPLETE) {
+
+
+// Retrieve selected location's CarmenFeature
+            CarmenFeature selectedCarmenFeature = PlaceAutocomplete.getPlace(data);
+            start = selectedCarmenFeature.placeName();
+            fab_start_search.setText(start);
+
+
+// Create a new FeatureCollection and add a new Feature to it using selectedCarmenFeature above.
+// Then retrieve and update the source designated for showing a selected location's symbol layer icon
+
+            if (mapboxMap != null) {
+                Style style = mapboxMap.getStyle();
+                if (style != null) {
+                    GeoJsonSource source = style.getSourceAs(geojsonSourceLayerId);
+                    if (source != null) {
+                        source.setGeoJson(FeatureCollection.fromFeatures(
+                                new Feature[]{Feature.fromJson(selectedCarmenFeature.toJson())}));
+                    }
+
+// Move map camera to the selected location
+                    mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                            new CameraPosition.Builder()
+                                    .target(new LatLng(((Point) selectedCarmenFeature.geometry()).latitude(),
+                                            ((Point) selectedCarmenFeature.geometry()).longitude()))
+                                    .zoom(14)
+                                    .build()), 4000);
+
+                    startLat = ((Point) selectedCarmenFeature.geometry()).latitude();
+                    startLng = ((Point) selectedCarmenFeature.geometry()).longitude();
+
+                    startLatLng = new LatLng(startLat, startLng);
 
 
 
+                    markerOptions=new MarkerOptions()
+                            .position(new LatLng(startLat, startLng))
+                            .title(start);
+                        mapboxMap.addMarker(markerOptions);
+
+                }
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_AUTOCOMPLETE2) {
+
+// Retrieve selected location's CarmenFeature
+            CarmenFeature selectedCarmenFeature = PlaceAutocomplete.getPlace(data);
+            end = selectedCarmenFeature.placeName();
+            fab_end_search.setText(end);
+// Create a new FeatureCollection and add a new Feature to it using selectedCarmenFeature above.
+// Then retrieve and update the source designated for showing a selected location's symbol layer icon
+
+            if (mapboxMap != null) {
+                Style style = mapboxMap.getStyle();
+                if (style != null) {
+                    GeoJsonSource source = style.getSourceAs(geojsonSourceLayerId);
+                    if (source != null) {
+                        source.setGeoJson(FeatureCollection.fromFeatures(
+                                new Feature[]{Feature.fromJson(selectedCarmenFeature.toJson())}));
+                    }
+
+// Move map camera to the selected location
+                    mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                            new CameraPosition.Builder()
+                                    .target(new LatLng(((Point) selectedCarmenFeature.geometry()).latitude(),
+                                            ((Point) selectedCarmenFeature.geometry()).longitude()))
+                                    .zoom(14)
+                                    .build()), 4000);
 
 
+                    endLat = ((Point) selectedCarmenFeature.geometry()).latitude();
+                    endLng = ((Point) selectedCarmenFeature.geometry()).longitude();
 
+                    endLatLng = new LatLng(endLat, endLng);
+
+
+                    markerOptions = new MarkerOptions()
+                            .position(new LatLng(endLat,endLng))
+                            .title(end);
+                    mapboxMap.addMarker(markerOptions);
+
+                }
+            }
+        }
+    }
+
+
+    @SuppressWarnings({"MissingPermission"})
+    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
+// Check if permissions are enabled and if not request
+        if (PermissionsManager.areLocationPermissionsGranted(this)) {
+
+// Get an instance of the component
+            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+
+// Activate with options
+            locationComponent.activateLocationComponent(
+                    LocationComponentActivationOptions.builder(this, loadedMapStyle).build());
+
+// Enable to make component visible
+            locationComponent.setLocationComponentEnabled(true);
+
+// Set the component's camera mode
+            locationComponent.setCameraMode(CameraMode.TRACKING);
+
+// Set the component's render mode
+            locationComponent.setRenderMode(RenderMode.COMPASS);
+
+        } else {
+            permissionsManager = new PermissionsManager(this);
+            permissionsManager.requestLocationPermissions(this);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onExplanationNeeded(List<String> permissionsToExplain) {
+        Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onPermissionResult(boolean granted) {
+        if (granted) {
+            mapboxMap.getStyle(new Style.OnStyleLoaded() {
+                @Override
+                public void onStyleLoaded(@NonNull Style style) {
+                    enableLocationComponent(style);
+                }
+            });
+        } else {
+            Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+    @Override
+    @SuppressWarnings({"MissingPermission"})
+    protected void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
 
 
     //for navigation view
@@ -235,16 +529,61 @@ public class Home extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.logOut) {
-            Intent intent=new Intent(Home.this,MainActivity.class);
+            Intent intent = new Intent(Home.this, MainActivity.class);
             startActivity(intent);
             Home.this.finish();
             return true;
-        }
-        else if(id==R.id.show_cabs)
-        {
-            Intent intent=new Intent(Home.this,CabsActivity.class);
+        } else if (id == R.id.show_cabs) {
+            Intent intent = new Intent(Home.this, CabsActivity.class);
             startActivity(intent);
             return true;
+        }
+        else if(id==R.id.reset)
+        {
+
+            if(btnReset.isActivated() && btnCompare1.isActivated()) {
+               if(mapboxMap!=null) {
+                   mapboxMap.clear();
+                   mapboxMap.removeAnnotations();
+                   if(navigationMapRoute!=null) {
+                       navigationMapRoute.removeRoute();
+                   }
+                   fab_start_search.setEnabled(true);
+                   fab_end_search.setEnabled(true);
+                   fab_start_search.setText("");
+                   fab_end_search.setText("");
+
+                   btnReset.setVisibility(View.GONE);
+                   btnCompare1.setVisibility(View.GONE);
+                   btnCompare.setVisibility(View.VISIBLE);
+               }
+               else
+               {
+                   Toast.makeText(this, "Map already in reset mode", Toast.LENGTH_SHORT).show();
+               }
+            }
+            else
+            {
+                fab_start_search.setText("");
+                fab_end_search.setText("");
+
+                mapboxMap.clear();
+                mapboxMap.removeAnnotations();
+
+
+                fab_start_search.setEnabled(true);
+                fab_end_search.setEnabled(true);
+                fab_start_search.setText("");
+                fab_end_search.setText("");
+
+                btnReset.setVisibility(View.GONE);
+                btnCompare1.setVisibility(View.GONE);
+                btnCompare.setVisibility(View.VISIBLE);
+               if(navigationMapRoute!=null) {
+                   navigationMapRoute.removeRoute();
+               }
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -256,12 +595,12 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.show_cabs1) {
-            Intent intent=new Intent(Home.this,CabsActivity.class);
+            Intent intent = new Intent(Home.this, CabsActivity.class);
             startActivity(intent);
             return true;
 
         } else if (id == R.id.log_out1) {
-            Intent intent=new Intent(Home.this,MainActivity.class);
+            Intent intent = new Intent(Home.this, MainActivity.class);
             startActivity(intent);
             Home.this.finish();
             return true;
@@ -270,227 +609,6 @@ public class Home extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    // for maps
-    //
-    //
-    //
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap=googleMap;
-    }
-
-    private void autoCompleteBoxForLocation() {
-
-        //initializes the api key but this is not necessary as it takes place automatically
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), API_KEY);
-        }
-        placesClient = Places.createClient(this);
-        final AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.place_location);
-        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
-
-        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                startPoint=place.getLatLng();
-                if(startPoint!=null)
-                {
-                    mMap.addMarker(new MarkerOptions()
-                            .title("Start Point")
-                            .position(startPoint)
-                    );
-                    mMap.animateCamera(CameraUpdateFactory.newLatLng(startPoint));
-                }
-                autocompleteSupportFragment.onPause();
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-                Toast.makeText(Home.this, "FAILED: " + status.getStatusMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void autoCompleteBoxForDestination() {
-        //initializes the api key but this is not necessary as it takes place automatically
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), API_KEY);
-        }
-        placesClient = Places.createClient(this);
-        final AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.place_destination);
-        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
-
-        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                endPoint=place.getLatLng();
-                if(endPoint!=null)
-                {
-                    mMap.addMarker(new MarkerOptions()
-                            .title("End Point")
-                            .position(endPoint)
-                    );
-                    mMap.animateCamera(CameraUpdateFactory.newLatLng(endPoint));
-
-                }
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-                Toast.makeText(Home.this, "FAILED: " + status.getStatusMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        displayLocation();
-        startLocationUpdates();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) { mGoogleApiClient.connect(); }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    private void startLocationUpdates() {
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        )
-        {
-            return;
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest,this);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        mLastLocation=location;
-        displayLocation();
-    }
-
-
-    private void setUpLocation() {
-
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        )
-        {
-            ActivityCompat.requestPermissions
-                    (this,new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
-                            MY_PERMISSION_REQUEST_CODE);
-        }
-        else
-        {
-            if(checkPlayServices())
-            {
-                buildGoogleApiClient();
-                createLocationRequest();
-                displayLocation();
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode)
-        {
-            case MY_PERMISSION_REQUEST_CODE:
-                if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
-                {
-                    if(checkPlayServices())
-                    {
-                        buildGoogleApiClient();
-                        createLocationRequest();
-                        displayLocation();
-                    }
-                }
-                break;
-        }
-    }
-
-    private Boolean checkPlayServices() {
-        int resultCode= GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if(resultCode!= ConnectionResult.SUCCESS)
-        {
-            if(GooglePlayServicesUtil.isUserRecoverableError(resultCode))
-            {
-                GooglePlayServicesUtil.getErrorDialog(resultCode,this,PLAY_SERVICES_RESOLUTION_REQUEST).show();
-
-            }
-            else
-            {
-                Toast.makeText(this, "This device is not supported", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
-
-    private void buildGoogleApiClient() {
-        mGoogleApiClient=new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-    }
-
-    private void createLocationRequest() {
-        mLocationRequest=new LocationRequest();
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(DISPLACEMENT);
-    }
-
-    private void displayLocation() {
-
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        )
-        {
-            return;
-        }
-        mLastLocation= LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if(mLastLocation !=null)
-        {
-            final double latitude=mLastLocation.getLatitude();
-            final double longitude=mLastLocation.getLongitude();
-
-            geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(latitude, longitude));
-            if(mUserMarker!=null)
-            {
-                mUserMarker.remove();
-            }
-            mUserMarker=mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(latitude,longitude))
-                    .title(String.format("You"))
-            );
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),15));
-
-        }
     }
 
 }
