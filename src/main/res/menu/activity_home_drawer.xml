@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+    >
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/bookCabH"
+            android:icon="@drawable/show_cabs"
+            android:title="Book Cab">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/bookUberH"
+                        android:title="Ride with Uber" />
+                    <item
+                        android:id="@+id/bookOlaH"
+                        android:title="Ride with Ola" />
+                </group>
+            </menu>
+        </item>
+
+        <item
+            android:id="@+id/aboutH"
+            android:title="Developer"
+            android:icon="@drawable/about_developer"
+            />
+
+        <item
+            android:id="@+id/privacyPolicyH"
+            android:icon="@drawable/privacypolicy"
+            android:title="Privacy Policy" />
+        <item
+            android:id="@+id/termsCndH"
+            android:icon="@drawable/terms"
+            android:title="Terms &amp; Conditions" />
+
+        <item
+            android:id="@+id/logOutH"
+            android:icon="@drawable/log_out"
+            android:title="Log Out" />
+
+
+    </group>
+</menu>

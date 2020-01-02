@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    >
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_height="match_parent"
+        tools:context=".CabRatesActivity"
+        android:orientation="vertical"
+        android:background="@drawable/wallcompare"
+        >
+
+        <LinearLayout
+            android:background="@drawable/transparent_bg_bordered_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:layout_margin="30dp"
+            >
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DISTANCE:               "
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/tvDistance"
+                    android:text="distance"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DURATION:               "
+                    />
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:text="duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvDuration" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="3"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="10dp"
+    android:id="@+id/textBoxVS"
+    >
+    <TextView
+        android:background="@drawable/transparent_bg_bordered_button"
+        android:textColor="#FFFFFF"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OLA"
+        android:textSize="20dp"
+        android:padding="7dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:gravity="center_horizontal"
+
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VS"
+        android:textSize="15dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        />
+
+    <TextView
+
+        android:padding="7dp"
+        android:background="@drawable/transparent_bg_bordered_button"
+        android:textColor="#FFFFFF"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:layout_weight="1"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UBER"
+        android:textStyle="bold"
+        />
+
+</LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/orientationLayout"
+            android:layout_marginBottom="20dp"
+            >
+
+            <TextView
+                android:background="@drawable/transparent_bg_bordered_button"
+                android:textColor="#FFFFFF"
+                android:layout_margin="5dp"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OLA"
+                android:textSize="20dp"
+                android:padding="7dp"
+                android:layout_marginBottom="0dp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:id="@+id/tvOLA"
+
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/olaList"
+
+                >
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+            <TextView
+                android:id="@+id/tvUber"
+                android:background="@drawable/transparent_bg_bordered_button"
+                android:textColor="#FFFFFF"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UBER"
+                android:textSize="20dp"
+                android:padding="7dp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/uberList">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:layout_height="wrap_content"
+            android:text="Change Alignment"
+            android:id="@+id/btnChangeAlignment"
+            android:background="@drawable/transparent_bg_bordered_button"
+            android:layout_marginBottom="20dp"
+            />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
