@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.os.ConfigurationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -359,13 +360,33 @@ public class Home extends AppCompatActivity
 // Add the symbol layer icon to map for future use
                 style.addImage(symbolIconId, BitmapFactory.decodeResource(
                         Home.this.getResources(), R.drawable.map_default_map_marker));
-
-
             }
         });
-
-
     }
+
+
+    private void initSearchFab() {
+
+
+
+        fab_start_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                Intent intent = new PlaceAutocomplete.IntentBuilder()
+                        .accessToken(Mapbox.getAccessToken() != null ? Mapbox.getAccessToken() : "pk.eyJ1Ijoic2hpdjg5NjhzaCIsImEiOiJjazJ4bHp4Y3AwZDRuM21vMnB3YjBsd2EyIn0.0WhEGT_VqjsHi8QMnzc6Yg")
+                        .placeOptions(PlaceOptions.builder()
+                                .backgroundColor(Color.parseColor("#EEEEEE"))
+                                .limit(10)
+                                .country(ConfigurationCompat.getLocales(getResources().getConfiguration()).get(0))
+                                .build(PlaceOptions.MODE_CARDS))
+                        .build(Home.this);
+                startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
+            }
+        });
+    }
+
 
     private void initSearchFab2() {
         fab_end_search.setOnClickListener(new View.OnClickListener() {
@@ -376,26 +397,11 @@ public class Home extends AppCompatActivity
                         .placeOptions(PlaceOptions.builder()
                                 .backgroundColor(Color.parseColor("#EEEEEE"))
                                 .limit(10)
+                                .country(ConfigurationCompat.getLocales(getResources().getConfiguration()).get(0))
                                 .build(PlaceOptions.MODE_CARDS))
                         .build(Home.this);
                 startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE2);
 
-            }
-        });
-    }
-
-    private void initSearchFab() {
-        fab_start_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new PlaceAutocomplete.IntentBuilder()
-                        .accessToken(Mapbox.getAccessToken() != null ? Mapbox.getAccessToken() : "pk.eyJ1Ijoic2hpdjg5NjhzaCIsImEiOiJjazJ4bHp4Y3AwZDRuM21vMnB3YjBsd2EyIn0.0WhEGT_VqjsHi8QMnzc6Yg")
-                        .placeOptions(PlaceOptions.builder()
-                                .backgroundColor(Color.parseColor("#EEEEEE"))
-                                .limit(10)
-                                .build(PlaceOptions.MODE_CARDS))
-                        .build(Home.this);
-                startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
             }
         });
     }
