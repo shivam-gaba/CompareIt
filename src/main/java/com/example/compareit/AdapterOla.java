@@ -74,7 +74,7 @@ public class AdapterOla extends RecyclerView.Adapter<AdapterOla.ViewHolder> {
                 distance=olaList.get(position).getDistance();
                 minutes=olaList.get(position).getMinutes();
 
-                double totalFare = baseFare+(perKM*distance)+(perMin*minutes)+tax;
+                double totalFare = baseFare+(perKM*distance)+(perMin*minutes);
 
                 if(totalFare>minFare)
                 {
@@ -95,49 +95,49 @@ public class AdapterOla extends RecyclerView.Adapter<AdapterOla.ViewHolder> {
         {
             holder.ivCabType.setImageResource(R.drawable.olamini);
             Fare obj=new Fare();
-            obj.getFare(43.46,43.46+16.24,8.2,1.24,16.24);
+            obj.getFare(43.46,43.46,8.2,1.24,16.24);
         }
         else if(olaList.get(position).getCabType().equalsIgnoreCase("micro"))
         {
             holder.ivCabType.setImageResource(R.drawable.olamicro);
             Fare obj=new Fare();
-            obj.getFare(37.5,37.5+15.39,7.5,1.5,15.39);
+            obj.getFare(37.5,37.5,7.5,1.5,15.39);
         }
         else if(olaList.get(position).getCabType().equalsIgnoreCase("auto"))
         {
             holder.ivCabType.setImageResource(R.drawable.olaauto);
             Fare obj=new Fare();
-            obj.getFare(0,0+0,0,0,0);
+            obj.getFare(0,0,0,0,0);
         }
         else if(olaList.get(position).getCabType().equalsIgnoreCase("bike"))
         {
             holder.ivCabType.setImageResource(R.drawable.olabike);
             Fare obj=new Fare();
-            obj.getFare(0,0+0,0,0,0);
+            obj.getFare(0,0,0,0,0);
         }
         else if(olaList.get(position).getCabType().equalsIgnoreCase("share"))
         {
             holder.ivCabType.setImageResource(R.drawable.olashare);
             Fare obj=new Fare();
-            obj.getFare(0,0+0,0,0,0);
+            obj.getFare(0,0,0,0,0);
         }
         else if(olaList.get(position).getCabType().equalsIgnoreCase("Prime Sedan"))
         {
             holder.ivCabType.setImageResource(R.drawable.olaprimesedan);
             Fare obj=new Fare();
-            obj.getFare(36,36+13.08,6.75,0.9,13.08);
+            obj.getFare(36,36,6.75,0.9,13.08);
         }
         else if(olaList.get(position).getCabType().equalsIgnoreCase("Prime Exec"))
         {
             holder.ivCabType.setImageResource(R.drawable.olaprimeexec);
             Fare obj=new Fare();
-            obj.getFare(49,49+18.36,10.5,1.25,18.36);
+            obj.getFare(49,49,10.5,1.25,18.36);
         }
         else if(olaList.get(position).getCabType().equalsIgnoreCase("Prime suv"))
         {
             holder.ivCabType.setImageResource(R.drawable.olaprimesuv);
             Fare obj=new Fare();
-            obj.getFare(99,99+25.65,14,2,25.65);
+            obj.getFare(99,99,14,2,25.65);
         }
     }
 
