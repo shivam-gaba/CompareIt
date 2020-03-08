@@ -23,6 +23,5 @@ public class AboutActivity extends AppCompatActivity
             AboutActivity.this.finish();
         }
     });
-
     }
 }
