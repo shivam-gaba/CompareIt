@@ -68,7 +68,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback, PermissionsListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, PermissionsListener {
 
     private MapView mapView;
     private PermissionsManager permissionsManager;
@@ -134,7 +134,7 @@ public class Home extends AppCompatActivity
 
         btnCompare = findViewById(R.id.btnCompare);
         btnCompare1 = findViewById(R.id.btnCompare1);
-        btnReset=findViewById(R.id.btnReset);
+        btnReset = findViewById(R.id.btnReset);
 
         btnReset.setVisibility(View.GONE);
         btnCompare.setVisibility(View.VISIBLE);
@@ -152,27 +152,26 @@ public class Home extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-
-                final AlertDialog alertDialog=new SpotsDialog(Home.this);
+                final AlertDialog alertDialog = new SpotsDialog(Home.this);
                 alertDialog.show();
-                final Handler handler  = new Handler();
+                final Handler handler = new Handler();
                 final Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
                         if (alertDialog.isShowing()) {
                             alertDialog.dismiss();
 
-                            Intent intent=new Intent(Home.this,CabRatesActivity.class);
-                            intent.putExtra("startLat",startLat);
-                            intent.putExtra("startLng",startLng);
-                            intent.putExtra("endLat",endLat);
-                            intent.putExtra("endLng",endLng);
-                            intent.putExtra("startLatLng",startLatLng);
-                            intent.putExtra("endLatLng",endLatLng);
-                            intent.putExtra("distance",distance);
-                            intent.putExtra("duration",duration);
-                            intent.putExtra("startLocName",start);
-                            intent.putExtra("endLocName",end);
+                            Intent intent = new Intent(Home.this, CabRatesActivity.class);
+                            intent.putExtra("startLat", startLat);
+                            intent.putExtra("startLng", startLng);
+                            intent.putExtra("endLat", endLat);
+                            intent.putExtra("endLng", endLng);
+                            intent.putExtra("startLatLng", startLatLng);
+                            intent.putExtra("endLatLng", endLatLng);
+                            intent.putExtra("distance", distance);
+                            intent.putExtra("duration", duration);
+                            intent.putExtra("startLocName", start);
+                            intent.putExtra("endLocName", end);
                             startActivity(intent);
                         }
                     }
@@ -233,9 +232,7 @@ public class Home extends AppCompatActivity
                         }
                     });
 
-                }
-                else
-                {
+                } else {
                     Toast.makeText(Home.this, "Map already in reset mode", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -276,8 +273,6 @@ public class Home extends AppCompatActivity
             fab_end_search.setEnabled(false);
 
 
-
-
         } else {
             Toast.makeText(this, "Please enter all fields!", Toast.LENGTH_SHORT).show();
         }
@@ -304,22 +299,19 @@ public class Home extends AppCompatActivity
 
                         if (navigationMapRoute != null) {
                             navigationMapRoute.updateRouteArrowVisibilityTo(false);
-                               } else {
+                        } else {
                             navigationMapRoute = new NavigationMapRoute(null, mapView, mapboxMap);
                         }
 
                         navigationMapRoute.addRoute(currentRoute);
-                        distance=currentRoute.duration();
+                        distance = currentRoute.duration();
 
-                        if(currentRoute.distance() != null && currentRoute.duration()!=null)
-                        {
-                            distance=currentRoute.distance();
-                            duration=currentRoute.duration();
-                        }
-                        else
-                        {
-                            distance=null;
-                            duration=null;
+                        if (currentRoute.distance() != null && currentRoute.duration() != null) {
+                            distance = currentRoute.distance();
+                            duration = currentRoute.duration();
+                        } else {
+                            distance = null;
+                            duration = null;
                         }
 
                     }
@@ -368,7 +360,6 @@ public class Home extends AppCompatActivity
     private void initSearchFab() {
 
 
-
         fab_start_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -412,7 +403,7 @@ public class Home extends AppCompatActivity
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_AUTOCOMPLETE) {
 
 
-// Retrieve selected location's CarmenFeature
+// Retrieve selected location's CarmenFeature++*
             CarmenFeature selectedCarmenFeature = PlaceAutocomplete.getPlace(data);
             start = selectedCarmenFeature.placeName();
             fab_start_search.setText(start);
@@ -444,11 +435,10 @@ public class Home extends AppCompatActivity
                     startLatLng = new LatLng(startLat, startLng);
 
 
-
-                    markerOptions=new MarkerOptions()
+                    markerOptions = new MarkerOptions()
                             .position(new LatLng(startLat, startLng))
                             .title(start);
-                        mapboxMap.addMarker(markerOptions);
+                    mapboxMap.addMarker(markerOptions);
 
                 }
             }
@@ -486,7 +476,7 @@ public class Home extends AppCompatActivity
 
 
                     markerOptions = new MarkerOptions()
-                            .position(new LatLng(endLat,endLng))
+                            .position(new LatLng(endLat, endLng))
                             .title(end);
                     mapboxMap.addMarker(markerOptions);
 
@@ -616,7 +606,7 @@ public class Home extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.logOutHO) {
-            AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setMessage("Are you sure, you want to logout ?");
             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
@@ -637,16 +627,13 @@ public class Home extends AppCompatActivity
 
             alertDialog.show();
             return true;
-        }
+        } else if (id == R.id.resetHO) {
+            if (!mapboxMap.getMarkers().isEmpty()) {
 
-        else if(id==R.id.resetHO)
-        {
-            if(!mapboxMap.getMarkers().isEmpty()) {
-
-                final AlertDialog alertDialog=new SpotsDialog(Home.this);
+                final AlertDialog alertDialog = new SpotsDialog(Home.this);
                 alertDialog.show();
 
-                final Handler handler  = new Handler();
+                final Handler handler = new Handler();
                 final Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
@@ -665,7 +652,7 @@ public class Home extends AppCompatActivity
                             mapboxMap.clear();
                             mapboxMap.removeAnnotations();
 
-                            if(navigationMapRoute !=null) {
+                            if (navigationMapRoute != null) {
                                 navigationMapRoute.removeRoute();
                             }
                         }
@@ -680,12 +667,10 @@ public class Home extends AppCompatActivity
                     }
                 });
 
+            } else {
+                Toast.makeText(this, "Map already in reset mode", Toast.LENGTH_SHORT).show();
             }
-               else
-               {
-                   Toast.makeText(this, "Map already in reset mode", Toast.LENGTH_SHORT).show();
-               }
-               return true;
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -702,7 +687,7 @@ public class Home extends AppCompatActivity
             return true;
 
         } else if (id == R.id.logOutH) {
-            AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setMessage("Are you sure, you want to logout ?");
             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
@@ -722,32 +707,26 @@ public class Home extends AppCompatActivity
             });
             alertDialog.show();
             return true;
-        }
-        else if(id==R.id.aboutH)
-        {
-            startActivity(new Intent(Home.this,AboutActivity.class));
+        } else if (id == R.id.aboutH) {
+            startActivity(new Intent(Home.this, AboutActivity.class));
             return true;
-        }
-        else if(id==R.id.privacyPolicyH)
-        {
-            AlertDialog.Builder dialog=new AlertDialog.Builder(this);
-            LayoutInflater inflater=LayoutInflater.from(this);
-            dialog.setView(inflater.inflate(R.layout.privacy_policy,null));
+        } else if (id == R.id.privacyPolicyH) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            dialog.setView(inflater.inflate(R.layout.privacy_policy, null));
             dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                  dialogInterface.dismiss();
+                    dialogInterface.dismiss();
                 }
             });
             dialog.show();
 
             return true;
-        }
-        else if(id==R.id.termsCndH)
-        {
-            AlertDialog.Builder dialog=new AlertDialog.Builder(this);
-            LayoutInflater inflater=LayoutInflater.from(this);
-            dialog.setView(inflater.inflate(R.layout.terms,null));
+        } else if (id == R.id.termsCndH) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            dialog.setView(inflater.inflate(R.layout.terms, null));
             dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -756,10 +735,8 @@ public class Home extends AppCompatActivity
             });
             dialog.show();
             return true;
-        }
-        else if(id==R.id.bookUberH)
-        {
-            AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        } else if (id == R.id.bookUberH) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setMessage("Redirect to Uber app ?");
             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
@@ -767,13 +744,9 @@ public class Home extends AppCompatActivity
 
                     Intent intent = getPackageManager().getLaunchIntentForPackage("com.ubercab");
 
-                    if (intent != null)
-                    {
+                    if (intent != null) {
                         startActivity(intent);
-                    }
-
-                    else
-                    {
+                    } else {
                         Uri uri = Uri.parse("http://play.google.com/store/apps/details?id=com.ubercab");
                         Intent goToPlayStore = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(goToPlayStore);
@@ -789,10 +762,8 @@ public class Home extends AppCompatActivity
             });
             alertDialog.show();
             return true;
-        }
-        else if(id==R.id.bookOlaH)
-        {
-            AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        } else if (id == R.id.bookOlaH) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setMessage("Redirect to Ola app ?");
             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
@@ -800,13 +771,9 @@ public class Home extends AppCompatActivity
 
                     Intent intent = getPackageManager().getLaunchIntentForPackage("com.olacabs.customer");
 
-                    if (intent != null)
-                    {
+                    if (intent != null) {
                         startActivity(intent);
-                    }
-
-                    else
-                    {
+                    } else {
                         Uri uri = Uri.parse("http://play.google.com/store/apps/details?id=com.olacabs.customer");
                         Intent goToPlayStore = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(goToPlayStore);

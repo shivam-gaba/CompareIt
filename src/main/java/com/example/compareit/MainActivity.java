@@ -29,7 +29,7 @@ import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private Button btnSignIn, btnRegister;
     private FirebaseAuth mauth;
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/arkhip_font.ttf")
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity{
                     return;
                 }
 
-                final AlertDialog waitingDialog=new SpotsDialog(MainActivity.this);
+                final AlertDialog waitingDialog = new SpotsDialog(MainActivity.this);
                 waitingDialog.show();
                 mauth.createUserWithEmailAndPassword(etEmailRegister.getText().toString(), etPasswordRegister.getText().toString())
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -191,63 +191,62 @@ public class MainActivity extends AppCompatActivity{
         dialog.setView(login_layout);
 
         dialog.setPositiveButton("SIGN IN", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        //check validation of user
-                        if (TextUtils.isEmpty(etEmailRegister.getText().toString())) {
-                            // here we use a snack bar and show it in root layout(MainActivity)
-                            Snackbar.make(root_layout, "Please enter email address", Snackbar.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        if (etPasswordRegister.getText().toString().length() < 6) {
-                            // here we use a snack bar and show it in root layout(MainActivity)
-                            Snackbar.make(root_layout, "Password too short !!!", Snackbar.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        if (TextUtils.isEmpty(etPasswordRegister.getText().toString())) {
-                            // here we use a snack bar and show it in root layout(MainActivity)
-                            Snackbar.make(root_layout, "Please enter password", Snackbar.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        dialogInterface.dismiss();
-
-                        // disables signIn button to avoid multiple authentications
-                        btnSignIn.setEnabled(false);
-                        // Login authentication
-
-                        final AlertDialog waitingDialog=new SpotsDialog(MainActivity.this);
-                        waitingDialog.show();
-                        mauth.signInWithEmailAndPassword(etEmailRegister.getText().toString(),etPasswordRegister.getText().toString())
-                                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                    @Override
-                                    public void onSuccess(AuthResult authResult) {
-                                        waitingDialog.dismiss();
-                                        startActivity(new Intent(MainActivity.this,Home.class));
-                                        finish();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        waitingDialog.dismiss();
-                                        Snackbar.make(root_layout,"FAILED "+e.getMessage(),Snackbar.LENGTH_LONG).show();
-                                        btnSignIn.setEnabled(true);
-                                    }
-                                });
-
-                    }
-               })
-        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                btnSignIn.setEnabled(true);
+
+                //check validation of user
+                if (TextUtils.isEmpty(etEmailRegister.getText().toString())) {
+                    // here we use a snack bar and show it in root layout(MainActivity)
+                    Snackbar.make(root_layout, "Please enter email address", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (etPasswordRegister.getText().toString().length() < 6) {
+                    // here we use a snack bar and show it in root layout(MainActivity)
+                    Snackbar.make(root_layout, "Password too short !!!", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(etPasswordRegister.getText().toString())) {
+                    // here we use a snack bar and show it in root layout(MainActivity)
+                    Snackbar.make(root_layout, "Please enter password", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
                 dialogInterface.dismiss();
+
+                // disables signIn button to avoid multiple authentications
+                btnSignIn.setEnabled(false);
+                // Login authentication
+
+                final AlertDialog waitingDialog = new SpotsDialog(MainActivity.this);
+                waitingDialog.show();
+                mauth.signInWithEmailAndPassword(etEmailRegister.getText().toString(), etPasswordRegister.getText().toString())
+                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                            @Override
+                            public void onSuccess(AuthResult authResult) {
+                                waitingDialog.dismiss();
+                                startActivity(new Intent(MainActivity.this, Home.class));
+                                finish();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                waitingDialog.dismiss();
+                                Snackbar.make(root_layout, "FAILED " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                btnSignIn.setEnabled(true);
+                            }
+                        });
             }
-        });
-    dialog.show();
+        })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        btnSignIn.setEnabled(true);
+                        dialogInterface.dismiss();
+                    }
+                });
+        dialog.show();
     }
 }
