@@ -69,7 +69,7 @@ public class CabRatesActivity extends AppCompatActivity
     ArrayList<OlaListClass> ola;
     ArrayList<UberListClass> uber;
 
-    public boolean alignment=false;
+    public boolean alignment = false;
     Button btnChangeAlignment;
 
     @Override
@@ -94,7 +94,7 @@ public class CabRatesActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("NOTE ...");
         alertDialog.setMessage("Due to some issue, partner cab applications have stopped providing API linking to the developers." +
                 "The fares provided in this app are just approximations made using the common algorithm followed by the partner Cab applications");
@@ -107,13 +107,13 @@ public class CabRatesActivity extends AppCompatActivity
         alertDialog.show();
 
 
-        btnChangeAlignment=findViewById(R.id.btnChangeAlignment);
-        tvDistance=findViewById(R.id.tvDistance);
-        tvDuration=findViewById(R.id.tvDuration);
-        olaList=findViewById(R.id.olaList);
-        uberList=findViewById(R.id.uberList);
+        btnChangeAlignment = findViewById(R.id.btnChangeAlignment);
+        tvDistance = findViewById(R.id.tvDistance);
+        tvDuration = findViewById(R.id.tvDuration);
+        olaList = findViewById(R.id.olaList);
+        uberList = findViewById(R.id.uberList);
 
-        orientationLayout=findViewById(R.id.orientationLayout);
+        orientationLayout = findViewById(R.id.orientationLayout);
 
 
         getLatLng();
@@ -134,116 +134,113 @@ public class CabRatesActivity extends AppCompatActivity
     @SuppressLint("WrongConstant")
     private void alignmentChanger() {
 
-        alignment=!alignment;
+        alignment = !alignment;
         getOlaRates();
         getUberRates();
-        orientationLayout.setOrientation(!alignment?LinearLayoutManager.HORIZONTAL:LinearLayoutManager.VERTICAL);
+        orientationLayout.setOrientation(!alignment ? LinearLayoutManager.HORIZONTAL : LinearLayoutManager.VERTICAL);
     }
 
     @SuppressLint("WrongConstant")
     private void getUberRates() {
 
-        if(alignment) {
-            LinearLayout textBoxVS=findViewById(R.id.textBoxVS);
+        if (alignment) {
+            LinearLayout textBoxVS = findViewById(R.id.textBoxVS);
             textBoxVS.setVisibility(View.GONE);
             TextView tvOla;
             TextView tvUber;
 
-            tvOla=findViewById(R.id.tvOLA);
-            tvUber=findViewById(R.id.tvUber);
+            tvOla = findViewById(R.id.tvOLA);
+            tvUber = findViewById(R.id.tvUber);
 
             tvOla.setVisibility(View.VISIBLE);
             tvUber.setVisibility(View.VISIBLE);
 
-            layoutManagerUber=new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        }
-        else
-        {
-            LinearLayout textBoxVS=findViewById(R.id.textBoxVS);
+            layoutManagerUber = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        } else {
+            LinearLayout textBoxVS = findViewById(R.id.textBoxVS);
             textBoxVS.setVisibility(View.VISIBLE);
             TextView tvOla;
             TextView tvUber;
 
-            tvOla=findViewById(R.id.tvOLA);
-            tvUber=findViewById(R.id.tvUber);
+            tvOla = findViewById(R.id.tvOLA);
+            tvUber = findViewById(R.id.tvUber);
 
             tvOla.setVisibility(View.GONE);
             tvUber.setVisibility(View.GONE);
-            layoutManagerUber=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+            layoutManagerUber = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         }
 
         uberList.setLayoutManager(layoutManagerUber);
 
-        uber= new ArrayList<>();
-        uber.add(new UberListClass("uber go",distance,minutes));
-        uber.add(new UberListClass("uber hire premier",distance,minutes));
-        uber.add(new UberListClass("uber hire go",distance,minutes));
+        uber = new ArrayList<>();
+        uber.add(new UberListClass("uber go", distance, minutes));
+        uber.add(new UberListClass("uber hire premier", distance, minutes));
+        uber.add(new UberListClass("uber hire go", distance, minutes));
         //uber.add(new UberListClass("uber moto",distance,minutes));
-        uber.add(new UberListClass("uber premier",distance,minutes));
+        uber.add(new UberListClass("uber premier", distance, minutes));
 
-        adapterUber=new AdapterUber(this,uber);
+        adapterUber = new AdapterUber(this, uber);
         uberList.setAdapter(adapterUber);
 
     }
+
     @SuppressLint("WrongConstant")
     private void getOlaRates() {
 
 
-        if(alignment) {
+        if (alignment) {
 
-            layoutManagerOla=new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        }
-        else
-        {
+            layoutManagerOla = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        } else {
 
-            layoutManagerOla=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+            layoutManagerOla = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         }
 
 
         olaList.setLayoutManager(layoutManagerOla);
 
-        ola= new ArrayList<>();
+        ola = new ArrayList<>();
         //ola.add(new OlaListClass("Bike",distance,minutes));
         //ola.add(new OlaListClass("Auto",distance,minutes));
-        ola.add(new OlaListClass("Prime Sedan",distance,minutes));
-        ola.add(new OlaListClass("Mini",distance,minutes));
-        ola.add(new OlaListClass("Micro",distance,minutes));
-        ola.add(new OlaListClass("Prime SUV",distance,minutes));
-        ola.add(new OlaListClass("Prime Exec",distance,minutes));
+        ola.add(new OlaListClass("Prime Sedan", distance, minutes));
+        ola.add(new OlaListClass("Mini", distance, minutes));
+        ola.add(new OlaListClass("Micro", distance, minutes));
+        ola.add(new OlaListClass("Prime SUV", distance, minutes));
+        ola.add(new OlaListClass("Prime Exec", distance, minutes));
         //ola.add(new OlaListClass("Share",distance,minutes));
 
-        adapterOla=new AdapterOla(this,ola);
+        adapterOla = new AdapterOla(this, ola);
         olaList.setAdapter(adapterOla);
     }
 
     @SuppressLint("SetTextI18n")
     private void getDistanceAndTime() {
-        distance=getIntent().getDoubleExtra("distance",0);
-        duration=getIntent().getDoubleExtra("duration",0);
+        distance = getIntent().getDoubleExtra("distance", 0);
+        duration = getIntent().getDoubleExtra("duration", 0);
 
-        minutes=duration/60;
-        distance=distance/1000;
+        minutes = duration / 60;
+        distance = distance / 1000;
 
         TimeZone tz = TimeZone.getTimeZone("UTC");
         @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         df.setTimeZone(tz);
-        String time = df.format(new Date((long) (duration*1000)));
+        String time = df.format(new Date((long) (duration * 1000)));
 
-        tvDistance.setText(String.format("%.2f", distance)+" Km");
-        tvDuration.setText(time+" Hrs");
+        tvDistance.setText(String.format("%.2f", distance) + " Km");
+        tvDuration.setText(time + " Hrs");
     }
 
 
     private void getLatLng() {
 
-        Intent intent=getIntent();
-        startLat=intent.getDoubleExtra("startLat",0);
-        endLat=intent.getDoubleExtra("endLat",0);
-        startLng=intent.getDoubleExtra("startLng",0);
-        endLng=intent.getDoubleExtra("endLng",0);
+        Intent intent = getIntent();
+        startLat = intent.getDoubleExtra("startLat", 0);
+        endLat = intent.getDoubleExtra("endLat", 0);
+        startLng = intent.getDoubleExtra("startLng", 0);
+        endLng = intent.getDoubleExtra("endLng", 0);
 
-        startLatLng= (LatLng) intent.getSerializableExtra("startLatLng");
-        endLatLng= (LatLng) intent.getSerializableExtra("endLatLng");
+        startLatLng = (LatLng) intent.getSerializableExtra("startLatLng");
+        endLatLng = (LatLng) intent.getSerializableExtra("endLatLng");
     }
 
 
@@ -254,8 +251,6 @@ public class CabRatesActivity extends AppCompatActivity
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
-
-
 
 
     // navigation controls
@@ -284,9 +279,8 @@ public class CabRatesActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if(id==R.id.logOutCO)
-        {
-            startActivity(new Intent(this,MainActivity.class));
+        if (id == R.id.logOutCO) {
+            startActivity(new Intent(this, MainActivity.class));
             CabRatesActivity.this.finish();
             return true;
         }
@@ -311,7 +305,7 @@ public class CabRatesActivity extends AppCompatActivity
 
         } else if (id == R.id.logOutC) {
 
-            AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setMessage("Are you sure, you want to logout ?");
             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
@@ -362,11 +356,8 @@ public class CabRatesActivity extends AppCompatActivity
             });
             dialog.show();
             return true;
-        }
-
-        else if(id==R.id.bookUberC)
-        {
-            AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        } else if (id == R.id.bookUberC) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setMessage("Redirect to Uber app ?");
             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
@@ -374,13 +365,9 @@ public class CabRatesActivity extends AppCompatActivity
 
                     Intent intent = getPackageManager().getLaunchIntentForPackage("com.ubercab");
 
-                    if (intent != null)
-                    {
+                    if (intent != null) {
                         startActivity(intent);
-                    }
-
-                    else
-                    {
+                    } else {
                         Uri uri = Uri.parse("http://play.google.com/store/apps/details?id=com.ubercab");
                         Intent goToPlayStore = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(goToPlayStore);
@@ -395,10 +382,8 @@ public class CabRatesActivity extends AppCompatActivity
             });
             alertDialog.show();
             return true;
-        }
-        else if(id==R.id.bookOlaC)
-        {
-            AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        } else if (id == R.id.bookOlaC) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setMessage("Redirect to Ola app ?");
             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
@@ -406,13 +391,9 @@ public class CabRatesActivity extends AppCompatActivity
 
                     Intent intent = getPackageManager().getLaunchIntentForPackage("com.olacabs.customer");
 
-                    if (intent != null)
-                    {
+                    if (intent != null) {
                         startActivity(intent);
-                    }
-
-                    else
-                    {
+                    } else {
                         Uri uri = Uri.parse("http://play.google.com/store/apps/details?id=com.olacabs.customer");
                         Intent goToPlayStore = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(goToPlayStore);

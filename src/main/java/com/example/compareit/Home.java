@@ -304,7 +304,7 @@ public class Home extends AppCompatActivity
                         }
 
                         navigationMapRoute.addRoute(currentRoute);
-                        distance = currentRoute.duration();
+                        distance = currentRoute.distance();
 
                         if (currentRoute.distance() != null && currentRoute.duration() != null) {
                             distance = currentRoute.distance();
